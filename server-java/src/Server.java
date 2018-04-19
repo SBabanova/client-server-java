@@ -24,15 +24,15 @@ public class Server {
             DataInputStream inputStream = new DataInputStream(socket.getInputStream());
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
 
-            String packet;
+            String message;
             while (true){
-                packet = inputStream.readUTF();
-                System.out.println(packet + "\n");
-                outputStream.writeUTF(packet + " 1");
+                message = inputStream.readUTF();
+                System.out.println("Client says: " + message + "\n");
+                outputStream.writeUTF(message.toUpperCase());
                 outputStream.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
 

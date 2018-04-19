@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -18,12 +16,22 @@ public class Client {
             InetAddress clientIP = InetAddress.getByName(strClientIP);
             Socket socket = new Socket(serverIP, serverPort);
 
-            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+            String message;
+            while (true){
+                message = bufferedReader.readLine();
+                System.out.println(message);
+                outputStream.writeUTF(message);
+                outputStream.flush();
+                message = inputStream.readUTF();
+                System.out.println("Server's answer: " + message + "\n");
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Server isn't available");
         }
 
     }
